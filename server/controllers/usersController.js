@@ -47,8 +47,8 @@ export const loginUser = async(req,res) => {
         res.cookie("refreshToken", refreshToken, { 
             httpOnly: true,
             secure: isProd,
-            sameSite: isProd ? undefined : false
-        });
+            sameSite: isProd ? 'None' : false
+        });sz
         res.json({ token: accessToken, user: {
             userId: user.id,
             username: user.username,
