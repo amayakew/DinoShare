@@ -43,8 +43,12 @@ export const loginUser = async(req,res) => {
 
         const accessToken = createAccessToken(user);
         const refreshToken = createRefreshToken(user);
-
-        res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: process.env.DISABLE_SECURE == 'true' ? false : true, sameSite: false});
+        const isProd = process.env.ENVIRONMENT == 'prod';
+        res.cookie("refreshToken", refreshToken, { 
+            httpOnly: true,
+            secure: isProd,
+            sameSite: isProd ? undefined : false
+        });
         res.json({ token: accessToken, user: {
             userId: user.id,
             username: user.username,
