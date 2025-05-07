@@ -2,7 +2,12 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { createAccessToken, createNewAccessToken, createRefreshToken } from '../helpers/createTokens.js';
 import { createUser, getUserByEmail } from '../models/usersModel.js';
+import dotenv from 'dotenv';
 
+dotenv.config();
+
+const IS_PROD = process.env.ENVIRONMENT == 'prod';
+console.log(`Environment: ${process.env.ENVIRONMENT}`)
 export const registerUser = async(req, res) => {
     const {username, email, password} = req.body;
     if(!username || !email || !password) {
@@ -43,12 +48,11 @@ export const loginUser = async(req,res) => {
 
         const accessToken = createAccessToken(user);
         const refreshToken = createRefreshToken(user);
-        const isProd = process.env.ENVIRONMENT == 'prod';
         res.cookie("refreshToken", refreshToken, { 
             httpOnly: true,
-            secure: isProd,
-            sameSite: isProd ? 'None' : false
-        });sz
+            secure: IS_PROD,
+            sameSite: IS_PROD ? undefined : false
+        });
         res.json({ token: accessToken, user: {
             userId: user.id,
             username: user.username,
