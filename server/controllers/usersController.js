@@ -44,7 +44,7 @@ export const loginUser = async(req,res) => {
         const accessToken = createAccessToken(user);
         const refreshToken = createRefreshToken(user);
 
-        res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: process.env.DISABLE_SECURE == 'true' ? false : true, sameSite: "None" });
+        res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: process.env.DISABLE_SECURE == 'true' ? false : true, sameSite: false});
         res.json({ token: accessToken, user: {
             userId: user.id,
             username: user.username,
@@ -59,11 +59,11 @@ export const loginUser = async(req,res) => {
 
 export const refreshAccessToken = async(req,res) => {
     const refreshToken = req.cookies?.refreshToken;
-    if(!refreshToken) return res.sendStatus(403);
+    if(!refreshToken) return res.status(403).json({message: 'Missing refresh token'});
 
     const REFRESH_SECRET = process.env.REFRESH_SECRET;
     jwt.verify(refreshToken, REFRESH_SECRET, (e, user) => {
-        if(e) return res.sendStatus(403);
+        if(e) return res.status(403).json({message: 'Invalid or expired refresh token'});
 
         const newAccessToken = createNewAccessToken(user);
         res.json({ token: newAccessToken, user: {
