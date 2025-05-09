@@ -8,6 +8,8 @@ dotenv.config();
 
 const IS_PROD = process.env.ENVIRONMENT == 'prod';
 console.log(`Environment: ${process.env.ENVIRONMENT}`)
+
+
 export const registerUser = async(req, res) => {
     const {username, email, password} = req.body;
     if(!username || !email || !password) {
@@ -48,8 +50,7 @@ export const loginUser = async(req,res) => {
 
         const accessToken = createAccessToken(user);
         const refreshToken = createRefreshToken(user);
-        res.cookie("refreshToken", refreshToken, { 
-            httpOnly: true,
+        res.cookie("refreshToken", refreshToken, {
             secure: IS_PROD,
             sameSite: IS_PROD ? "None" : false
         });

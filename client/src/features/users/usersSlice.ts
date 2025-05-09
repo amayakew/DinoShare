@@ -58,6 +58,8 @@ const usersSlice = createSlice({
     reducers: {
         logout: (state) => {
             Object.assign(state, initialState);
+            document.cookie = "refreshToken=;";
+
         },
     },
     extraReducers(builder){
