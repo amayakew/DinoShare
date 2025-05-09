@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosError } from 'axios';
-import type { User } from '../../models/User';
+import type { User } from '../models/User';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL;
 
-export type UsersSliceState = {
+type UsersSliceState = {
     user: User | null,
     authToken: string | null,
     isLoggedIn: boolean,

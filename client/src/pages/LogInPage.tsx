@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { Link as RouterLink } from 'react-router';
 import type { AppDispatch, RootState } from '../app/store';
-import { loginUser } from '../features/users/usersSlice';
+import { loginUser } from '../features/usersSlice';
 
 const LogInPage = () => {
     const [email, setEmail] = useState('');

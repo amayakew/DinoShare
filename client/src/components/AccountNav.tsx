@@ -3,7 +3,7 @@ import Logout from '@mui/icons-material/Logout';
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../app/store";
-import { logout } from "../features/users/usersSlice";
+import { logout } from "../features/usersSlice";
 
 const AccauntNav = () => {
     const user = useSelector((state: RootState) => state.users.user);

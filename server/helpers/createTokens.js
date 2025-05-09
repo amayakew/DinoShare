@@ -32,7 +32,7 @@ export const createNewAccessToken = (user) => {
     const JWT_SECRET = process.env.JWT_SECRET;
     const newAccessToken = jwt.sign(
         {
-            userId: user.id,
+            userId: user.id || user.userId,
             username: user.username,
             email: user.email, 
         },

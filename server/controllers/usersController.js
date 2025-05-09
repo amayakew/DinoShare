@@ -71,14 +71,13 @@ export const refreshAccessToken = async(req,res) => {
     if(!refreshToken) return res.status(403).json({message: 'Missing refresh token'});
 
     const REFRESH_SECRET = process.env.REFRESH_SECRET;
-    jwt.verify(refreshToken, REFRESH_SECRET, (e, user) => {
+    jwt.verify(refreshToken, REFRESH_SECRET, (e, token) => {
         if(e) return res.status(403).json({message: 'Invalid or expired refresh token'});
-
-        const newAccessToken = createNewAccessToken(user);
+        const newAccessToken = createNewAccessToken(token);
         res.json({ token: newAccessToken, user: {
-            userId: user.id,
-            username: user.username,
-            email: user.email
+            userId: token.userId,
+            username: token.username,
+            email: token.email
         }});
     });
 };

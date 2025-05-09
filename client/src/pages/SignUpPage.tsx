@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link as RouterLink } from 'react-router';
 import type { AppDispatch, RootState } from '../app/store';
-import { signupUser } from '../features/users/usersSlice';
+import { signupUser } from '../features/usersSlice';
 
 const SignUpPage = () => {
     const [username, setUsername] = useState('');

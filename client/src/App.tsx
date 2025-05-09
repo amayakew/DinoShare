@@ -6,7 +6,7 @@ import type { AppDispatch, RootState } from "./app/store";
 import GroupsPage from "./pages/GroupsPage";
 import SignUpPage from './pages/SignUpPage';
 import LogInPage from "./pages/LogInPage";
-import { refreshToken } from "./features/users/usersSlice";
+import { refreshToken } from "./features/usersSlice";
 
 import './App.css';
 import FriendsPage from "./pages/FriendsPage";
