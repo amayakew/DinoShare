@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { createAccessToken, createNewAccessToken, createRefreshToken } from '../helpers/createTokens.js';
-import { createUser, getUserByEmail } from '../models/usersModel.js';
+import { createUser, getUserByEmail, getUsers } from '../models/usersModel.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -55,7 +55,7 @@ export const loginUser = async(req,res) => {
             sameSite: IS_PROD ? "None" : false
         });
         res.json({ token: accessToken, user: {
-            userId: user.id,
+            id: user.id,
             username: user.username,
             email: user.email
         }});
@@ -75,9 +75,19 @@ export const refreshAccessToken = async(req,res) => {
         if(e) return res.status(403).json({message: 'Invalid or expired refresh token'});
         const newAccessToken = createNewAccessToken(token);
         res.json({ token: newAccessToken, user: {
-            userId: token.userId,
+            id: token.userId,
             username: token.username,
             email: token.email
         }});
     });
+};
+
+export const getAllUsers = async(req, res) => {
+    try {
+        const users = await getUsers();
+        res.status(200).json({users});
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({message: 'Server error, try later'});
+    }
 };

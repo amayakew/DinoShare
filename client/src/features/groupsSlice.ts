@@ -1,26 +1,26 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosError } from 'axios';
-import type { User } from '../models/User';
+import type { Group } from '../models/Group';
 import type { RootState } from "../app/store";
 
 const API_URL = import.meta.env.VITE_API_BASE_URL;
 
-export type FriendsSliceState = {
-    friends: null | User[],
+export type GroupsSliceState = {
+    groups: null | Group[],
     loading: boolean,
     error: null | string,
 };
 
-const initialState: FriendsSliceState = {
-    friends: null,
+const initialState: GroupsSliceState = {
+    groups: null,
     loading: false,
     error: null,
 };
 
-export const getAllFriends = createAsyncThunk('friends/friendslist', async(_, {getState, rejectWithValue}) => {
+export const getAllGroups = createAsyncThunk('groups/groupslist', async(_, {getState, rejectWithValue}) => {
     try {
         const token = (getState() as RootState).users.authToken;
-        const res = await axios.get(`${API_URL}/api/friends`, {
+        const res = await axios.get(`${API_URL}/api/groups`, {
             headers: { Authorization: `Bearer ${token}` },
             withCredentials: true
         });
@@ -28,58 +28,59 @@ export const getAllFriends = createAsyncThunk('friends/friendslist', async(_, {g
         return res.data;
     } catch (e: unknown) {
         const error = e as AxiosError<{ message: string }>;
-        return rejectWithValue(error.response?.data?.message || 'Failed getting friends list');
+        return rejectWithValue(error.response?.data?.message || 'Failed getting groups list');
     }
 });
 
-export const addNewFriend = createAsyncThunk('users/addfriend', async(payload: {friend_id: number}, {getState, rejectWithValue}) => {
+export const createGroupAddMembers = createAsyncThunk('groups/addgroup', async(payload: {name: string, description: string, members_ids: number[]}, {getState, rejectWithValue}) => {
     try {
         const token = (getState() as RootState).users.authToken;
-        const res = await axios.post(`${API_URL}/api/addfriend`, payload, {
+        const res = await axios.post(`${API_URL}/api/addgroup`, payload, {
             headers: { Authorization: `Bearer ${token}` },
             withCredentials: true
         });
+
         return res.data;
     } catch (e: unknown) {
         const error = e as AxiosError<{ message: string }>;
-        return rejectWithValue(error.response?.data?.message || 'Failed adding new friend');
+        return rejectWithValue(error.response?.data?.message || 'Failed adding group');
     }
 });
 
-const friendsSlice = createSlice({
-    name: 'friends',
+const groupsSlice = createSlice({
+    name: 'groups',
     initialState,
     reducers: {},
     extraReducers(builder){
         builder
-        .addCase(getAllFriends.pending, (state) => {
+        .addCase(getAllGroups.pending, (state) => {
             state.loading = true;
             state.error = null;
-            state.friends = null;
+            state.groups = null;
         })
-        .addCase(getAllFriends.fulfilled, (state, action: PayloadAction<{friends: User[]}>) => {
+        .addCase(getAllGroups.fulfilled, (state, action: PayloadAction<{groups: Group[]}>) => {
             state.loading = false;
-            state.friends = action.payload.friends;
+            state.groups = action.payload.groups;
             state.error = null;
         })
-        .addCase(getAllFriends.rejected, (state, action) => {
+        .addCase(getAllGroups.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload as string || 'Unexpected error';
         })
 
-        .addCase(addNewFriend.pending, (state) => {
+        .addCase(createGroupAddMembers.pending, (state) => {
             state.loading = true;
             state.error = null;
         })
-        .addCase(addNewFriend.fulfilled, (state) => {
+        .addCase(createGroupAddMembers.fulfilled, (state) => {
             state.loading = false;
             state.error = null;
         })
-        .addCase(addNewFriend.rejected, (state, action) => {
+        .addCase(createGroupAddMembers.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload as string || 'Unexpected error';
         })
     }
 });
 
-export default friendsSlice.reducer;
+export default groupsSlice.reducer;

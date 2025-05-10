@@ -1,23 +1,28 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosError } from 'axios';
 import type { User } from '../models/User';
+import type { RootState } from "../app/store";
 
 const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 type UsersSliceState = {
+    users: null | User[],
     user: User | null,
     authToken: string | null,
     isLoggedIn: boolean,
     loading: boolean,
+    errorFetch: string | null,
     errorSignup: string | null,
     errorLogin: string | null,
 };
 
 const initialState: UsersSliceState = {
+    users: null,
     user: null,
     authToken: null,
     isLoggedIn: false,
     loading: false,
+    errorFetch: null,
     errorSignup: null,
     errorLogin: null,
 };
@@ -49,6 +54,21 @@ export const refreshToken  = createAsyncThunk('users/refreshToken', async(_, {re
     } catch (e: unknown) {
         const error = e as AxiosError<{ message: string }>;
         return rejectWithValue(error.response?.data?.message || 'Refresh token failed');
+    }
+});
+
+export const getAllUsers = createAsyncThunk('users/getUsers', async(_, {getState, rejectWithValue}) => {
+    try {
+        const token = (getState() as RootState).users.authToken;
+        const res = await axios.get(`${API_URL}/api/addfriend`, {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true
+        });
+
+        return res.data;
+    } catch (e: unknown) {
+        const error = e as AxiosError<{ message: string }>;
+        return rejectWithValue(error.response?.data?.message || 'Failed getting users list');
     }
 });
 
@@ -105,6 +125,21 @@ const usersSlice = createSlice({
             state.user = null;
             state.authToken = null;
             state.isLoggedIn = false;
+        })
+
+        .addCase(getAllUsers.pending, (state) => {
+            state.loading = true;
+            state.errorFetch = null;
+            state.users = null;
+        })
+        .addCase(getAllUsers.fulfilled, (state, action: PayloadAction<{users: User[]}>) => {
+            state.loading = false;
+            state.errorFetch = null;
+            state.users = action.payload.users;
+        })
+        .addCase(getAllUsers.rejected, (state, action) => {
+            state.loading = false;
+            state.errorFetch = action.payload as string || 'Unexpected error';
         })
     }
 });

@@ -1,10 +1,12 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import usersReducer from '../features/usersSlice';
-import friendsReducer from '../features/friendsSlice';
+import usersReducer from '../features/usersSlice.js';
+import friendsReducer from '../features/friendsSlice.js';
+import groupsReducer from '../features/groupsSlice.js';
 
 const appReducers = combineReducers({
     users: usersReducer,
     friends: friendsReducer,
+    groups: groupsReducer,
 });
 
 const store = configureStore({

@@ -8,7 +8,7 @@ const Navbar = () => {
           <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', px: 2, alignItems: 'center'}}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <img
-                src="../../dinoLogo.png" // your logo file path
+                src="../../dinoLogo.png"
                 alt="Logo"
                 style={{ height: 50, marginRight: 8 }}
                 />
@@ -16,8 +16,7 @@ const Navbar = () => {
                     DinoShare
                 </Typography>
             </Box>
-    
-            {/* Links with active styling */}
+
             <Box sx={{position: 'absolute', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 3}}>
               <Button 
                 color="inherit" 

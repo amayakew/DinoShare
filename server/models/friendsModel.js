@@ -13,3 +13,19 @@ export const getFriends = async (user_id) => {
 
     return await executeInTransaction(callback);
 };
+
+export const addFriend = async(user_id, friend_id) => {
+    const callback = async (db) => {
+
+        const result = await db.query(
+            'INSERT INTO friends(user_id, friend_id) VALUES($1, $2) RETURNING *',
+        [user_id, friend_id]
+        );
+
+        await db.query('COMMIT');
+        const friend = result.rows[0];
+        return friend;
+    };
+
+    return await executeInTransaction(callback);
+};

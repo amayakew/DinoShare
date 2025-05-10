@@ -41,3 +41,17 @@ export const getUserByEmail = async (email) => {
 
     return await executeInTransaction(callback);
 };
+
+export const getUsers = async () => {
+    const callback = async (db) => {
+
+        const result = await db.query(
+            'SELECT id, username, email FROM users'
+        );
+
+        const users = result.rows;
+        return users;
+    };
+
+    return await executeInTransaction(callback);
+};

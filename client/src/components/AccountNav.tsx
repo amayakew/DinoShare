@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../app/store";
 import { logout } from "../features/usersSlice";
+import FirstLetterAvatar from "./FirstLetterAvatar";
 
 const AccauntNav = () => {
     const user = useSelector((state: RootState) => state.users.user);
@@ -28,7 +29,7 @@ const AccauntNav = () => {
                     size="small"
                     sx={{ ml: 2 }}
                 >
-                    <Avatar sx={{ width: 32, height: 32 }}>{user?.username[0]}</Avatar>
+                    <FirstLetterAvatar text={user?.username} />
                 </IconButton>
             </Tooltip>
             <Menu

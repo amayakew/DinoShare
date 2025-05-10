@@ -3,6 +3,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { usersRouter } from './routes/usersRouter.js';
 import { friendsRouter } from './routes/friendsRouter.js';
+import { groupsRouter } from './routes/groupsRouter.js';
 
 const app = express();
 app.use(express.json());
@@ -19,3 +20,4 @@ app.listen(PORT, () => {
 
 app.use('/api', usersRouter);
 app.use('/api', friendsRouter);
+app.use('/api', groupsRouter);
