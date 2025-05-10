@@ -1,4 +1,4 @@
-import { Container, CircularProgress, Alert, List, ListItemButton, ListItemAvatar, Avatar, ListItemText, IconButton } from "@mui/material";
+import { Container, CircularProgress, Alert, List, ListItemButton, ListItemAvatar, ListItemText, IconButton } from "@mui/material";
 import type { RootState, AppDispatch } from "../app/store";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";

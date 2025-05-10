@@ -1,4 +1,4 @@
-import { Menu, MenuItem, ListItemIcon, Tooltip, IconButton, Avatar } from "@mui/material";
+import { Menu, MenuItem, ListItemIcon, Tooltip, IconButton} from "@mui/material";
 import Logout from '@mui/icons-material/Logout';
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";

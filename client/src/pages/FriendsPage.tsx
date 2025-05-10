@@ -1,4 +1,4 @@
-import { Container, List, ListItemAvatar, Avatar, ListItemText, ListItemButton, CircularProgress, Alert, IconButton } from "@mui/material";
+import { Container, List, ListItemAvatar, ListItemText, ListItemButton, CircularProgress, Alert, IconButton } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import Navbar from "../components/Navbar";
 import { useSelector, useDispatch } from "react-redux";

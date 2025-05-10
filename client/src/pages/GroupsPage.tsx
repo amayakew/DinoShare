@@ -1,4 +1,4 @@
-import { Container, ListItemButton, List, ListItemAvatar, ListItemText, Avatar, CircularProgress, Alert, IconButton} from '@mui/material';
+import { Container, ListItemButton, List, ListItemAvatar, ListItemText, CircularProgress, Alert, IconButton} from '@mui/material';
 import { Add } from '@mui/icons-material';
 import Navbar from '../components/Navbar';
 import { NavLink } from 'react-router-dom';

@@ -1,4 +1,4 @@
-import { Container, List, ListItemButton, ListItemAvatar, Avatar, ListItemText, IconButton, CircularProgress, Alert } from "@mui/material";
+import { Container, List, ListItemButton, ListItemAvatar, ListItemText, IconButton, CircularProgress, Alert } from "@mui/material";
 import { Add, Done } from "@mui/icons-material";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState, AppDispatch } from "../app/store";
