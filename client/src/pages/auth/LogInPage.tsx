@@ -2,8 +2,9 @@ import { Container, Box, Typography, TextField, Button, Link, Alert, CircularPro
 import { useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { Link as RouterLink } from 'react-router';
-import type { AppDispatch, RootState } from '../app/store';
-import { loginUser } from '../features/usersSlice';
+import type { AppDispatch, RootState } from '../../app/store';
+import { loginUser } from '../../features/usersSlice';
+import Logo from "../../components/nav/Logo";
 
 const LogInPage = () => {
     const [email, setEmail] = useState('');
@@ -31,8 +32,8 @@ const LogInPage = () => {
 
     return (
         <Container maxWidth="sm">
-            <Box sx={{ mt: 8, display: 'flex', flexDirection: 'column', gap: 2 }}>
-                <Typography variant="h4" textAlign="center">Log In</Typography>
+            <Box sx={{ mt: 20, display: 'flex', flexDirection: 'column', gap: 2}}>
+                <Logo/>
                 {error && (<Alert severity="error">{error}</Alert>)}
                 {success && (
                     <Alert severity="success">
