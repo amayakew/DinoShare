@@ -1,12 +1,12 @@
-import { Box, Stepper, Step, StepLabel, Button, Typography, CircularProgress } from '@mui/material';
+import { Box, Stepper, Step, StepLabel, Button, Typography, CircularProgress, Card } from '@mui/material';
 import { useEffect, useState } from 'react';
 import AddGroupDetails from './AddGroupDetails';
 import AddGroupMembers from './AddGroupMembers';
 import SaveNewGroup from './SaveNewGroup';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { createGroupAddMembers } from '../features/groupsSlice';
-import type { AppDispatch, RootState } from '../app/store';
+import { createGroupAddMembers } from '../../features/groupsSlice';
+import type { AppDispatch, RootState } from '../../app/store';
 
 const steps = ['Add Group Details', 'Add Members', 'Create Group'];
 
@@ -72,7 +72,7 @@ const CreateGroupStepper = () => {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Card sx={{ width: '80%', padding: '30px' }}>
       <Stepper activeStep={activeStep}>
         {steps.map((label) => (
           <Step key={label}>
@@ -96,7 +96,7 @@ const CreateGroupStepper = () => {
           </>
         )}
       </Box>
-    </Box>
+    </Card>
   );
 };
 

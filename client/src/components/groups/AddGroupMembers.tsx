@@ -1,10 +1,10 @@
 import { Container, List, ListItemButton, ListItemAvatar, ListItemText, IconButton, CircularProgress, Alert } from "@mui/material";
 import { Add, Done } from "@mui/icons-material";
 import { useSelector, useDispatch } from "react-redux";
-import type { RootState, AppDispatch } from "../app/store";
+import type { RootState, AppDispatch } from "../../app/store.js";
 import { useEffect } from "react";
-import { getAllFriends } from "../features/friendsSlice.js";
-import FirstLetterAvatar from "./FirstLetterAvatar.js";
+import { getAllFriends } from "../../features/friendsSlice.js";
+import FirstLetterAvatar from "../FirstLetterAvatar.js";
 
 
 type AddGroupMembersProps = {

@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { CardContent, Typography, Box, Card, Stack, Chip, Avatar } from "@mui/material";
 import { useSelector } from "react-redux";
-import type { RootState } from "../app/store";
+import type { RootState } from "../../app/store";
 
 type SaveNewGroupProps = {
     name: string;
