@@ -1,5 +1,9 @@
 
 
+const roundToTwo = (num) => {
+    return Math.round(num * 100) / 100;
+  };
+
 const getSummary = (extendedGroup) => {
     const deletedIds = [];
     const pastUsersSummary  = {
@@ -70,14 +74,17 @@ const getSummary = (extendedGroup) => {
 
     const totalMembers = extendedGroup.members.length + pastUsersSummary.deletedCount;
     const priceForMember = totalMembers ? totalMoneySpent / totalMembers : 0;
-
+    let totalBalance = 0;
     Object.keys(summaryByMemberId).forEach((memberId) => {
         const memberSummary = summaryByMemberId[memberId];
-        memberSummary.userOwed = memberSummary.spent - memberSummary.received - priceForMember;
+        memberSummary.userOwed = roundToTwo(memberSummary.spent - memberSummary.received - priceForMember);
+        if (memberSummary.userOwed < 0) {
+            totalBalance += memberSummary.userOwed;
+        }
     });
     return {
         summaryByMemberId,
-        groupBalance: totalMoneyRefund - totalMoneySpent + priceForMember,
+        groupBalance: totalBalance,
         totalUsersInGroupHistory: totalMembers
     }
 }

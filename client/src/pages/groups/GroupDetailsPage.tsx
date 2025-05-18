@@ -170,10 +170,10 @@ const GroupDetailsPage = () => {
                 </CardContent>
                 <Box sx={{alignSelf: 'center', display: 'flex', gap: 2}}>
                             <Typography>
-                                <strong>Group Balance:</strong> <span style={{color: (groupBalance || 0) >= 0 ? 'green' : 'red'}}>{groupBalance}</span>
+                                <strong>Group Balance:</strong> <span style={{color: (groupBalance || 0) >= 0 ? 'green' : 'red'}}>{groupBalance?.toFixed(2)}</span>
                             </Typography>
                             <Typography>
-                                <strong>{(currentUserBalance || 0) >= 0 ? "You're owed: " : "You owe: "}</strong> <span style={{color: (currentUserBalance || 0) >= 0 ? 'green' : 'red'}}>{currentUserBalance}</span>
+                                <strong>{(currentUserBalance || 0) >= 0 ? "You're owed: " : "You owe: "}</strong> <span style={{color: (currentUserBalance || 0) >= 0 ? 'green' : 'red'}}>{currentUserBalance?.toFixed(2)}</span>
                             </Typography>
                 </Box>
                 <CardActions sx={{alignSelf: 'center'}}>
