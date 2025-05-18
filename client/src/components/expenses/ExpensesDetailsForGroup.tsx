@@ -52,7 +52,7 @@ const ExpensesDetailsForGroup = () => {
                                     <Typography variant="body1">{day}</Typography>
                                 </Box>
                             </Box>
-                            {isExpense(transaction) && <ExpenseItem expense = {transaction} isCurrentUser = {isCurrentUserExpense} totalMembers={totalMembers}/>}
+                            {isExpense(transaction) && <ExpenseItem expense = {transaction} isCurrentUser = {isCurrentUserExpense} totalMembers={totalMembers || 0}/>}
                             {isRefund(transaction) && <RefundItem refund = {transaction} currentUserId = {user?.id || -1}/>}
                         </ListItem>
                     )
