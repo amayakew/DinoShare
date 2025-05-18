@@ -29,3 +29,15 @@ export const addFriend = async(user_id, friend_id) => {
 
     return await executeInTransaction(callback);
 };
+
+export const deleteFriend = async(user_id, friend_id) => {
+    const callback = async(db) => {
+        await db.query(
+            'DELETE FROM friends WHERE user_id = $1 AND friend_id = $2', [user_id, friend_id]
+        );
+
+        await db.query('COMMIT');
+    };
+
+    return await executeInTransaction(callback);
+}; 

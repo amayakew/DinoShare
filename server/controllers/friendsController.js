@@ -1,4 +1,4 @@
-import { addFriend, getFriends } from "../models/friendsModel.js";
+import { addFriend, deleteFriend, getFriends } from "../models/friendsModel.js";
 
 export const getAllFriends = async(req, res) => {
     const user_id = req.token.userId;
@@ -31,6 +31,19 @@ export const addNewFriend = async(req,res) => {
     try {
         const newFriend = await addFriend(user_id, friend_id);
         res.status(201).json({newFriend});
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({message: 'Server error, try later'});
+    }
+};
+
+export const deleteFromFriends = async(req, res) => {
+    const user_id = req.token.userId;
+    const friend_id = req.params.id;;
+
+    try {
+        const friendToDelete = await deleteFriend(user_id, friend_id);
+        res.status(200).json({friendToDelete});
     } catch (e) {
         console.log(e);
         res.status(500).json({message: 'Server error, try later'});
