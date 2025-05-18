@@ -22,7 +22,7 @@ export const registerUser = async(req, res) => {
     } catch (e) {
         console.log(e);
         if(e.code === '23505') {
-            res.status(409).json({message: 'User already exists'});
+            res.status(409).json({message: 'User with this email already exists'});
             return;
         };
         res.status(500).json({message: 'Server error, try later'});
