@@ -46,6 +46,20 @@ export const addNewFriend = createAsyncThunk('users/addfriend', async(payload: {
     }
 });
 
+export const deleteFriend = createAsyncThunk('users/deletefriend', async(payload: {friend_id: number}, {getState, rejectWithValue}) => {
+    try {
+        const token = (getState() as RootState).users.authToken;
+        const res = await axios.delete(`${API_URL}/api/deletefriend/${payload.friend_id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true
+        });
+        return res.data;
+    } catch (e: unknown) {
+        const error = e as AxiosError<{ message: string }>;
+        return rejectWithValue(error.response?.data?.message || 'Failed friend delete');
+    }
+});
+
 const friendsSlice = createSlice({
     name: 'friends',
     initialState,
@@ -76,6 +90,19 @@ const friendsSlice = createSlice({
             state.error = null;
         })
         .addCase(addNewFriend.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload as string || 'Unexpected error';
+        })
+
+        .addCase(deleteFriend.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+        .addCase(deleteFriend.fulfilled, (state) => {
+            state.loading = false;
+            state.error = null;
+        })
+        .addCase(deleteFriend.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload as string || 'Unexpected error';
         })

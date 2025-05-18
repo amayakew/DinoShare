@@ -1,13 +1,14 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosError } from 'axios';
-import type { User } from '../models/User';
 import type { RootState } from "../app/store";
+import type { UserWithBalance } from "../models/UserWithBalance.ts";
 
 const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 type UsersSliceState = {
-    users: null | User[],
-    user: User | null,
+    refreshTokenLoading: boolean,
+    users: null | UserWithBalance[],
+    user: UserWithBalance | null,
     authToken: string | null,
     isLoggedIn: boolean,
     loading: boolean,
@@ -17,6 +18,7 @@ type UsersSliceState = {
 };
 
 const initialState: UsersSliceState = {
+    refreshTokenLoading: true,
     users: null,
     user: null,
     authToken: null,
@@ -78,6 +80,7 @@ const usersSlice = createSlice({
     reducers: {
         logout: (state) => {
             Object.assign(state, initialState);
+            state.refreshTokenLoading = false;
             document.cookie = "refreshToken=;";
 
         },
@@ -100,7 +103,7 @@ const usersSlice = createSlice({
             state.loading = true;
             state.errorLogin = null;
         })
-        .addCase(loginUser.fulfilled, (state: UsersSliceState, action: PayloadAction<{user: User, token: string}>) => {
+        .addCase(loginUser.fulfilled, (state: UsersSliceState, action: PayloadAction<{user: UserWithBalance, token: string}>) => {
             state.loading = false;
             state.isLoggedIn = true;
             state.user = action.payload.user;
@@ -112,16 +115,16 @@ const usersSlice = createSlice({
         })
 
         .addCase(refreshToken.pending, (state) => {
-            state.loading = true;
+            state.refreshTokenLoading = true;
         })
-        .addCase(refreshToken.fulfilled, (state, action: PayloadAction<{user: User, token: string}>) => {
-            state.loading = false;
+        .addCase(refreshToken.fulfilled, (state, action: PayloadAction<{user: UserWithBalance, token: string}>) => {
+            state.refreshTokenLoading = false;
             state.isLoggedIn = true;
             state.user = action.payload.user;
             state.authToken = action.payload.token;
         })
         .addCase(refreshToken.rejected, (state) => {
-            state.loading = false;
+            state.refreshTokenLoading = false;
             state.user = null;
             state.authToken = null;
             state.isLoggedIn = false;
@@ -132,7 +135,7 @@ const usersSlice = createSlice({
             state.errorFetch = null;
             state.users = null;
         })
-        .addCase(getAllUsers.fulfilled, (state, action: PayloadAction<{users: User[]}>) => {
+        .addCase(getAllUsers.fulfilled, (state, action: PayloadAction<{users: UserWithBalance[]}>) => {
             state.loading = false;
             state.errorFetch = null;
             state.users = action.payload.users;

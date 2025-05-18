@@ -5,7 +5,7 @@ type FirstLetterAvatarProps = {
 };
 
 const FirstLetterAvatar = ({text}: FirstLetterAvatarProps) => {
-    return <Avatar sx={{ bgcolor: 'primary.light', width: 32, height: 32 }}>{text && text[0]}</Avatar>;
+    return <Avatar sx={{ bgcolor: 'primary.main', width: 32, height: 32 }}>{text && text[0]}</Avatar>;
 };
 
 export default FirstLetterAvatar;
