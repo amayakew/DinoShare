@@ -75,13 +75,26 @@ const getSummary = (extendedGroup) => {
     const totalMembers = extendedGroup.members.length + pastUsersSummary.deletedCount;
     const priceForMember = totalMembers ? totalMoneySpent / totalMembers : 0;
     let totalBalance = 0;
+    let totalBalanceUnrounded = 0;
+    let userForLeftOvers;
     Object.keys(summaryByMemberId).forEach((memberId) => {
         const memberSummary = summaryByMemberId[memberId];
-        memberSummary.userOwed = roundToTwo(memberSummary.spent - memberSummary.received - priceForMember);
+        const price = memberSummary.spent - memberSummary.received - priceForMember;
+        memberSummary.userOwed = roundToTwo(price);
         if (memberSummary.userOwed < 0) {
             totalBalance += memberSummary.userOwed;
+            totalBalanceUnrounded += price;
+            if (price < memberSummary.userOwed && !userForLeftOvers) {
+                userForLeftOvers = memberId;
+            }
         }
     });
+
+    if (totalBalanceUnrounded < totalBalance && userForLeftOvers) {
+        summaryByMemberId[userForLeftOvers].userOwed -= 0.01;
+        totalBalance -= 0.01;
+    }
+
     return {
         summaryByMemberId,
         groupBalance: totalBalance,
@@ -132,7 +145,7 @@ export const summarizeGroupExpensesAndRefunds = (extendedGroup, currentUserId) =
                         price: currentSummary.userOwed,
                         currency: 'USD'
                     });
-                    summaryOfUserThatMaybeOwesMoney.userOwed += currentSummary.userOwed;
+                    summaryOfUserThatMaybeOwesMoney.userOwed = roundToTwo(summaryOfUserThatMaybeOwesMoney.userOwed + currentSummary.userOwed);
                     currentSummary.userOwed = 0;
                 }
                 else {
@@ -144,14 +157,17 @@ export const summarizeGroupExpensesAndRefunds = (extendedGroup, currentUserId) =
                         price: -summaryOfUserThatMaybeOwesMoney.userOwed,
                         currency: 'USD'
                     });
-                    currentSummary.userOwed += summaryOfUserThatMaybeOwesMoney.userOwed;
+                    currentSummary.userOwed =  roundToTwo(currentSummary.userOwed + summaryOfUserThatMaybeOwesMoney.userOwed);
+                    
                     summaryOfUserThatMaybeOwesMoney.userOwed = 0;
                     lastUsedLatestIndex --;
                     if (lastUsedLatestIndex < 0) {
-                        console.error(`Unable to resolve payments for group: ${extendedGroup.id}`)
-                        break;
+                        throw new Error(`Unable to resolve payments for group: ${extendedGroup.id}`)
                     }
                 }
+            }
+            else {
+                throw new Error(`Unable to resolve payments for group: ${extendedGroup.id}`);
             }
         }
     }
